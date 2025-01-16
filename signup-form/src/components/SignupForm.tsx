@@ -44,11 +44,21 @@ const SignupForm: React.FC = () => {
             ...formData,
             [name]: value,
         });
+
+        setErrors({
+            ...errors,
+            [e.target.name]: "",
+        });
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-    }
+        if (validate()) {
+            console.log("Form submitted:", formData);
+        } else {
+            console.log("Validation failed");
+        }
+    };
 
     return (
         <div>
@@ -64,6 +74,7 @@ const SignupForm: React.FC = () => {
                         <option value="institution_staff">Institution Staff</option>
                         <option value="service_provider">Service Provider</option>
                     </select>
+                    {errors.user_type && <p className="error-message">{errors.user_type}</p>}
                 </label>
             </div>
 
@@ -79,6 +90,7 @@ const SignupForm: React.FC = () => {
                         onChange={handleChange}
                         required
                     />
+                    {errors.first_name && <p className="error-message">{errors.first_name}</p>}
                 </label>
                 </div>
             <div>
@@ -92,6 +104,7 @@ const SignupForm: React.FC = () => {
                         onChange={handleChange}
                         required
                     />
+                    {errors.last_name && <p className="error-message">{errors.last_name}</p>}
                 </label>
             </div>
                 </div>
@@ -108,6 +121,7 @@ const SignupForm: React.FC = () => {
                         onChange={handleChange}
                         required
                     />
+                    {errors.username && <p className="error-message">{errors.username}</p>}
                 </label>
                 </div>
                 <div>
@@ -121,6 +135,7 @@ const SignupForm: React.FC = () => {
                         onChange={handleChange}
                         required
                     />
+                    {errors.email && <p className="error-message">{errors.email}</p>}
                 </label>
                 </div>
                 </div>
@@ -136,6 +151,7 @@ const SignupForm: React.FC = () => {
                         onChange={handleChange}
                         required
                     />
+                    {errors.password && <p className="error-message">{errors.password}</p>}
                 </label>
                 </div>
                 <div>
@@ -149,6 +165,7 @@ const SignupForm: React.FC = () => {
                         onChange={handleChange}
                         required
                     />
+                    {errors.country && <p className="error-message">{errors.country}</p>}
                 </label>
                 </div>
                 </div>
