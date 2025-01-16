@@ -1,4 +1,5 @@
 import React, {HTMLInputTypeAttribute, useState} from "react";
+import './SignUp.css'
 
 const SignupForm: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -23,8 +24,8 @@ const SignupForm: React.FC = () => {
 
     return (
         <div>
-            <h2>Sign Up Form</h2>
-            <form onSubmit={handleSubmit}>
+            <h2 className="center">Sign Up Form</h2>
+            <form className="signup-form" onSubmit={handleSubmit}>
                 <label>
                     User Type:
                     <select name="user_type" value={formData.user_type} onChange={handleChange} required>
@@ -105,6 +106,6 @@ const SignupForm: React.FC = () => {
                 <button type="submit">Sign Up</button>
             </form>
         </div>
-)
-}
+);
+};
 export default SignupForm;
