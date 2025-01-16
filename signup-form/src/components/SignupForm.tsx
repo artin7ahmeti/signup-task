@@ -1,7 +1,11 @@
 import React, {HTMLInputTypeAttribute, useState} from "react";
+import { useDispatch, useSelector} from "react-redux";
+import { RootState, AppDispatch } from "../store";
 import './SignUp.css'
 
+
 const SignupForm: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const [formData, setFormData] = useState({
         user_type: '',
         first_name: '',
