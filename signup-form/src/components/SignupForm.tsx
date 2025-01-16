@@ -107,3 +107,4 @@ const SignupForm: React.FC = () => {
         </div>
 )
 }
+export default SignupForm;
