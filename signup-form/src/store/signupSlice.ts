@@ -29,3 +29,42 @@ const initialState: SignupState = {
     success: false,
     error: null,
 };
+
+const signupSlice = createSlice({
+    name: "signup",
+    initialState,
+    reducers: {
+        updateFormData(state, action) {
+            state.formData = {
+                ...state.formData,
+                ...action.payload,
+            };
+        },
+        resetState(state) {
+            state.formData = initialState.formData;
+            state.loading = false;
+            state.success = false;
+            state.error = null;
+        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(signupUser.pending, (state) => {
+                state.loading = false;
+                state.success = false;
+                state.error = null;
+            })
+            .addCase(signupUser.fulfilled, (state) => {
+                state.loading = false;
+                state.success = true;
+            })
+            .addCase(signupUser.rejected, (state, action) => {
+                state.loading = false;
+                state.success = false;
+                state.error = action.payload as string;
+            });
+    },
+});
+
+export const { updateFormData, resetState } = signupSlice.actions;
+export default signupSlice.reducer;
