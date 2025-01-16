@@ -34,7 +34,8 @@ export const signupUser = createAsyncThunk(
     "signup/signupUser",
     async (formData: SignupState["formData"], thunkAPI) => {
         try {
-            const response = await fetch("https://django-dev.aakscience.com/signup", {
+            console.log("Payload to API:", formData);
+            const response = await fetch("https://django-dev.aakscience.com/signup/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
