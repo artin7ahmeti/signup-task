@@ -2,19 +2,15 @@ import React, {HTMLInputTypeAttribute, useState} from "react";
 import { useDispatch, useSelector} from "react-redux";
 import { RootState, AppDispatch } from "../store";
 import './SignUp.css'
+import {resetState, signupUser, updateFormData} from "../store/signupSlice";
 
 
 const SignupForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const [formData, setFormData] = useState({
-        user_type: '',
-        first_name: '',
-        last_name: '',
-        username: '',
-        email: '',
-        password: '',
-        country: '',
-    });
+    const {
+        formData, loading, success, error } = useSelector(
+        (state: RootState) => state.signup
+    );
 
     const [errors, setErrors] = useState({
         user_type: "",
@@ -43,25 +39,16 @@ const SignupForm: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>)=> {
         const {name, value} = e.target;
-
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-
-        setErrors({
-            ...errors,
-            [e.target.name]: "",
-        });
+        dispatch(updateFormData({ [name]: value }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (validate()) {
-            console.log("Form submitted:", formData);
-        } else {
-            console.log("Validation failed");
-        }
+        dispatch(signupUser(formData));
+    };
+
+    const resetForm = () => {
+        dispatch(resetState());
     };
 
     return (
@@ -78,7 +65,6 @@ const SignupForm: React.FC = () => {
                         <option value="institution_staff">Institution Staff</option>
                         <option value="service_provider">Service Provider</option>
                     </select>
-                    {errors.user_type && <p className="error-message">{errors.user_type}</p>}
                 </label>
             </div>
 
@@ -94,7 +80,6 @@ const SignupForm: React.FC = () => {
                         onChange={handleChange}
                         required
                     />
-                    {errors.first_name && <p className="error-message">{errors.first_name}</p>}
                 </label>
                 </div>
             <div>
@@ -108,7 +93,6 @@ const SignupForm: React.FC = () => {
                         onChange={handleChange}
                         required
                     />
-                    {errors.last_name && <p className="error-message">{errors.last_name}</p>}
                 </label>
             </div>
                 </div>
@@ -125,7 +109,6 @@ const SignupForm: React.FC = () => {
                         onChange={handleChange}
                         required
                     />
-                    {errors.username && <p className="error-message">{errors.username}</p>}
                 </label>
                 </div>
                 <div>
@@ -139,7 +122,6 @@ const SignupForm: React.FC = () => {
                         onChange={handleChange}
                         required
                     />
-                    {errors.email && <p className="error-message">{errors.email}</p>}
                 </label>
                 </div>
                 </div>
@@ -155,7 +137,6 @@ const SignupForm: React.FC = () => {
                         onChange={handleChange}
                         required
                     />
-                    {errors.password && <p className="error-message">{errors.password}</p>}
                 </label>
                 </div>
                 <div>
@@ -169,12 +150,23 @@ const SignupForm: React.FC = () => {
                         onChange={handleChange}
                         required
                     />
-                    {errors.country && <p className="error-message">{errors.country}</p>}
                 </label>
                 </div>
                 </div>
 
-                <button type="submit">Sign Up</button>
+                <button type="submit" disabled={loading}>
+                    {loading ? "Request sent" : "Sign Up"}
+                </button>
+
+                {success && (
+                    <p className="succes-message">
+                        Signup Successful!{""}
+                        <button onClick={resetForm}>
+                            Reset Form
+                        </button>
+                    </p>
+                )}
+                {error && <p className="error-message">Error: {error}</p> }
             </form>
         </div>
 );
