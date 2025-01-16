@@ -12,6 +12,16 @@ const SignupForm: React.FC = () => {
         country: '',
     });
 
+    const [errors, setErrors] = useState({
+        user_type: "",
+        first_name: '',
+        last_name: '',
+        username: '',
+        email: '',
+        password: '',
+        country: '',
+    })
+
     const validate = () => {
         const newErrors = {
             user_type: !formData.user_type ? "User Type is required" : "",
@@ -21,8 +31,12 @@ const SignupForm: React.FC = () => {
             email: !/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(formData.email) ? "Enter a valid email" : "",
             password: formData.password.length < 6 ? "Password must be at least 6 characters long" : "",
             country: !formData.country ? "Country is required" : "",
-        }
-    }
+        };
+
+        setErrors(newErrors);
+        return Object.values(newErrors).every((error) => error === "");
+    };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>)=> {
         const {name, value} = e.target;
 
