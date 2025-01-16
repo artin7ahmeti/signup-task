@@ -30,6 +30,30 @@ const initialState: SignupState = {
     error: null,
 };
 
+export const signupUser = createAsyncThunk(
+    "signup/signupUser",
+    async (formData: SignupState["formData"], thunkAPI) => {
+        try {
+            const response = await fetch("https://django-dev.aakscience.com/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                return thunkAPI.rejectWithValue(errorData.message);
+            }
+
+            return  response.json();
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue("Unexpected error.");
+        }
+    }
+);
+
 const signupSlice = createSlice({
     name: "signup",
     initialState,
