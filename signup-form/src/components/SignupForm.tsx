@@ -12,9 +12,12 @@ const SignupForm: React.FC = () => {
         country: '',
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>)=> {
+        const {name, value} = e.target;
+
         setFormData({
             ...formData,
+            [name]: value,
         });
     };
 
@@ -26,6 +29,7 @@ const SignupForm: React.FC = () => {
         <div>
             <h2 className="center">Sign Up Form</h2>
             <form className="signup-form" onSubmit={handleSubmit}>
+            <div>
                 <label>
                     User Type:
                     <select name="user_type" value={formData.user_type} onChange={handleChange} required>
@@ -36,6 +40,10 @@ const SignupForm: React.FC = () => {
                         <option value="service_provider">Service Provider</option>
                     </select>
                 </label>
+            </div>
+
+            <div className="form-group">
+                <div>
                 <label>
                     First Name:
                     <input
@@ -47,6 +55,8 @@ const SignupForm: React.FC = () => {
                         required
                     />
                 </label>
+                </div>
+            <div>
                 <label>
                     Last Name:
                     <input
@@ -58,6 +68,11 @@ const SignupForm: React.FC = () => {
                         required
                     />
                 </label>
+            </div>
+                </div>
+
+                <div className="form-group">
+                    <div>
                 <label>
                     Username:
                     <input
@@ -69,6 +84,8 @@ const SignupForm: React.FC = () => {
                         required
                     />
                 </label>
+                </div>
+                <div>
                 <label>
                     Email:
                     <input
@@ -80,6 +97,10 @@ const SignupForm: React.FC = () => {
                         required
                     />
                 </label>
+                </div>
+                </div>
+                <div className="form-group">
+                <div>
                 <label>
                     Password:
                     <input
@@ -91,6 +112,8 @@ const SignupForm: React.FC = () => {
                         required
                     />
                 </label>
+                </div>
+                <div>
                 <label>
                     Country:
                     <input
@@ -102,6 +125,8 @@ const SignupForm: React.FC = () => {
                         required
                     />
                 </label>
+                </div>
+                </div>
 
                 <button type="submit">Sign Up</button>
             </form>

@@ -16,6 +16,7 @@
   font-family: Arial, sans-serif;
 }
 
+
 .signup-form h2 {
   text-align: center;
   margin-bottom: 30px;
@@ -66,6 +67,17 @@
   transform: scale(0.98);
 }
 
+.signup-form .form-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.signup-form .form-group div {
+  flex: 1;
+
+
+}
 .signup-form .form-group:last-of-type {
   margin-bottom: 30px;
 }
