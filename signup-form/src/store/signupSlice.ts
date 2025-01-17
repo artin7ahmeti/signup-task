@@ -46,7 +46,7 @@ export const signupUser = createAsyncThunk(
 
                 if (contentType && contentType.includes("application/json")) {
                     const errorData = await response.json();
-                    return thunkAPI.rejectWithValue({message: errorData.message || "Unknown error ocurred."});
+                    return thunkAPI.rejectWithValue(errorData);
                 } else {
                     const errorMessage = await response.text();
                     return thunkAPI.rejectWithValue({message: errorMessage.trim()});
@@ -91,12 +91,8 @@ const signupSlice = createSlice({
                 state.loading = false;
                 state.success = false;
 
-                const errorPayload = action.payload as { message: string } | string;
-
-                if (typeof errorPayload === "string") {
-                    state.error = errorPayload;
-                } else if (errorPayload && errorPayload.message) {
-                    state.error = errorPayload.message;
+                if (action.payload && typeof action.payload === "string") {
+                    state.error = action.payload;
                 } else {
                     state.error = "An unexpected error ocurred.";
                 }

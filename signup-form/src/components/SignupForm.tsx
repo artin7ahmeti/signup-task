@@ -125,14 +125,8 @@ const SignupForm: React.FC = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className={error && error.includes("email") ? "error-input" : ""}
                     />
                 </label>
-                    {error && error.includes("email") && (
-                        <p>
-                            This email is already registered.
-                        </p>
-                    )}
                 </div>
                 </div>
                 <div className="form-group">
@@ -176,7 +170,7 @@ const SignupForm: React.FC = () => {
                         </button>
                     </p>
                 )}
-                {error && <p className="error-message">Error: {error}</p> }
+                {error && (<p className="error-message">Error: {error}</p>)}
             </form>
         </div>
 );
