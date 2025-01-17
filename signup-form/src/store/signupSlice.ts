@@ -42,16 +42,23 @@ export const signupUser = createAsyncThunk(
                 body: JSON.stringify(formData),
             });
 
+            const contentType = response.headers.get("Content-Type");
+
             if (!response.ok) {
-                const errorData = await response.json();
-                return thunkAPI.rejectWithValue(errorData.message);
+                if (contentType && contentType.includes("application/json")) {
+                    const errorData = await response.json();
+                    return thunkAPI.rejectWithValue(errorData.message || "Unknown error ocurred.");
+                } else {
+                    const errorMessage = await response.text();
+                    return thunkAPI.rejectWithValue(errorMessage.trim());
+                }
             }
 
-            return  response.json();
-        } catch (error: any) {
-            return thunkAPI.rejectWithValue("Unexpected error.");
+            return await response.json()
+            } catch (error) {
+        return thunkAPI.rejectWithValue("Unexpected error.");
         }
-    }
+}
 );
 
 const signupSlice = createSlice({
@@ -85,7 +92,11 @@ const signupSlice = createSlice({
             .addCase(signupUser.rejected, (state, action) => {
                 state.loading = false;
                 state.success = false;
-                state.error = action.payload as string;
+                if (action.payload === "Error: THIS EMAIL IS ALREADY REGISTERED!") {
+                    state.error = "The email address is already registered."
+                } else {
+                    state.error = action.payload as string || "An unexpected error occurred.";
+                }
             });
     },
 });
