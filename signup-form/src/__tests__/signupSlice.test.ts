@@ -40,4 +40,14 @@ describe('signupSlice', () => {
         expect(newState).toEqual(initialState);
     });
 
+    describe("signupUser async thunk", () => {
+        test("should handle pending state", () => {
+            const action = { type: signupUser.pending.type};
+            const state = signupReducer(initialState, action);
+
+            expect(state.loading).toBe(true);
+            expect(state.success).toBe(false);
+            expect(state.error).toBe(null);
+        });
+    })
 });
