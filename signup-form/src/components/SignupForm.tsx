@@ -37,10 +37,14 @@ const SignupForm: React.FC = () => {
         return Object.values(newErrors).every((error) => error === "");
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>)=> {
-        const {name, value} = e.target;
+    const [localFormData, setLocalFormData] = useState(formData);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setLocalFormData({ ...localFormData, [name]: value });
         dispatch(updateFormData({ [name]: value }));
     };
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
