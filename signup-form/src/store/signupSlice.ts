@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-
 interface SignupState {
     formData: {
         user_type: string;
@@ -42,23 +41,22 @@ export const signupUser = createAsyncThunk(
                 body: JSON.stringify(formData),
             });
 
-            const contentType = response.headers.get("Content-Type");
-
             if (!response.ok) {
+                const contentType = response.headers.get("Content-Type");
+
                 if (contentType && contentType.includes("application/json")) {
                     const errorData = await response.json();
-                    return thunkAPI.rejectWithValue(errorData.message || "Unknown error ocurred.");
+                    return thunkAPI.rejectWithValue({message: errorData.message || "Unknown error ocurred."});
                 } else {
                     const errorMessage = await response.text();
-                    return thunkAPI.rejectWithValue(errorMessage.trim());
+                    return thunkAPI.rejectWithValue({message: errorMessage.trim()});
                 }
             }
-
             return await response.json()
-            } catch (error) {
-        return thunkAPI.rejectWithValue("Unexpected error.");
+        } catch (error) {
+            return thunkAPI.rejectWithValue({message: "Unexpected error."});
         }
-}
+    }
 );
 
 const signupSlice = createSlice({
@@ -92,10 +90,15 @@ const signupSlice = createSlice({
             .addCase(signupUser.rejected, (state, action) => {
                 state.loading = false;
                 state.success = false;
-                if (action.payload === "Error: THIS EMAIL IS ALREADY REGISTERED!") {
-                    state.error = "The email address is already registered."
+
+                const errorPayload = action.payload as { message: string } | string;
+
+                if (typeof errorPayload === "string") {
+                    state.error = errorPayload;
+                } else if (errorPayload && errorPayload.message) {
+                    state.error = errorPayload.message;
                 } else {
-                    state.error = action.payload as string || "An unexpected error occurred.";
+                    state.error = "An unexpected error ocurred.";
                 }
             });
     },
